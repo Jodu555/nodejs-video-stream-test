@@ -1,0 +1,28 @@
+{
+	"name": "nodejs-video-stream-test",
+	"version": "1.0.0",
+	"description": "An Simple NodeJS Application which shall integrate with the player from WDS and should help me to understand how video streaming works",
+	"main": "index.js",
+	"scripts": {
+		"start": "node src/index.js",
+		"dev": "nodemon src/index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Jodu555/nodejs-video-stream-test.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Jodu555/nodejs-video-stream-test/issues"
+	},
+	"homepage": "https://github.com/Jodu555/nodejs-video-stream-test#readme",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.1",
+		"express": "^4.18.1",
+		"helmet": "^5.1.0",
+		"morgan": "^1.10.0"
+	}
+}
