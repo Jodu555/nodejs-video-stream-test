@@ -21,6 +21,13 @@ app.use(morgan('dev'));
 // app.use(helmet());
 app.use(express.json());
 
+app.use((req, res, next) => {
+    if (req.path.includes('/assets/previewImgs')) {
+        res.set('Cache-control', `public, max-age=${60 * 5}`)
+    }
+    next();
+})
+
 let server;
 if (process.env.https) {
     const sslProperties = {
@@ -68,5 +75,5 @@ app.get("/video", (req, res) => {
 
 const PORT = process.env.PORT || 3100;
 server.listen(PORT, () => {
-    console.log(`Express App Listening ${process.env.https ? 'with SSL ' : ''}on `);
+    console.log(`Express App Listening ${process.env.https ? 'with SSL ' : ''}on ${PORT}`);
 });
