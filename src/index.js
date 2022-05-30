@@ -18,7 +18,7 @@ const dotenv = require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(morgan('dev'));
-app.use(helmet());
+// app.use(helmet());
 app.use(express.json());
 
 let server;
@@ -41,19 +41,18 @@ app.get("/video", (req, res) => {
     const range = req.headers.range;
     if (!range) {
         res.status(400).send("Requires Range header");
+        return;
     }
 
-    // get video stats (about 61MB)
-    const videoPath = "video.mp4";
+    const videoPath = path.join('F:\\Dayli Record', '2020-08-19 03-14-59.mp4');
     const videoSize = fs.statSync(videoPath).size;
 
-    // Parse Range
-    // Example: "bytes=32324-"
     const CHUNK_SIZE = 10 ** 6; // 1MB
     const start = Number(range.replace(/\D/g, ""));
     const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 
-    // Create headers
+    console.log({ videoPath, videoSize, start, end });
+
     const contentLength = end - start + 1;
     const headers = {
         "Content-Range": `bytes ${start}-${end}/${videoSize}`,
@@ -62,13 +61,8 @@ app.get("/video", (req, res) => {
         "Content-Type": "video/mp4",
     };
 
-    // HTTP Status 206 for Partial Content
     res.writeHead(206, headers);
-
-    // create video read stream for this particular chunk
     const videoStream = fs.createReadStream(videoPath, { start, end });
-
-    // Stream the video chunk to the client
     videoStream.pipe(res);
 });
 
