@@ -62,30 +62,31 @@ const crawlAndIndex = () => {
         }
     });
 
-    const aniworld = obj['Aniworld']
-
     const items = [];
-
-    // console.log(aniworld);
-    // return;
-    for (let i = 0; i < aniworld.length;) {
-        const title = aniworld[i];
-        const seasons = [];
-        const movies = []
-        i++;
-        while (aniworld[i] != undefined && (aniworld[i].includes('Season-') || aniworld[i].includes('Movies'))) {
-            aniworld[i].includes('Season-') ? seasons.push(aniworld[i]) : movies.push(aniworld[i]);
+    Object.keys(obj).forEach(categorie => {
+        const dirs = obj[categorie]
+        for (let i = 0; i < dirs.length;) {
+            const title = dirs[i];
+            const seasons = [];
+            const movies = []
             i++;
+            while (dirs[i] != undefined && (dirs[i].includes('Season-') || dirs[i].includes('Movies'))) {
+                dirs[i].includes('Season-') ? seasons.push(dirs[i]) : movies.push(dirs[i]);
+                i++;
+            }
+            items.push(new Item(null, categorie, title, movies, seasons));
         }
-        items.push(new Item(null, title, movies, seasons));
-    }
+    });
+
     console.log(items);
+
 
 }
 
 class Item {
-    constructor(ID, title, movies = [], seasons = []) {
+    constructor(ID, categorie, title, movies = [], seasons = []) {
         this.ID = ID;
+        this.categorie = categorie;
         this.title = title;
         this.seasons = seasons;
         this.movies = movies;
