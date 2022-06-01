@@ -49,6 +49,47 @@ app.get("/video", require('./video.js'));
 const crawlAndIndex = () => {
     const { dirs, files } = listFiles(process.env.VIDEO_PATH);
 
+    const overcategories = ['Aniworld', 'STO'];
+
+    const obj = {};
+
+    let sortIdx = -1;
+    dirs.forEach(dir => {
+        if (overcategories.includes(dir)) {
+            sortIdx == -1 ? sortIdx = 0 : sortIdx++;
+        } else {
+            obj[overcategories[sortIdx]] == undefined ? obj[overcategories[sortIdx]] = [dir] : obj[overcategories[sortIdx]].push(dir);
+        }
+    });
+
+    console.log(obj);
+
+    // console.log(dirs);
+    // return;
+    // for (let i = 0; i < dirs.length;) {
+    //     const title = dirs[i];
+    //     const se = [];
+    //     // console.log(title, i);
+    //     i++;
+    //     // console.log(1337, title, i, dirs[i]);
+    //     while (dirs[i] != undefined && dirs[i].includes('Season-')) {
+    //         console.log(1212, title, i, dirs[i]);
+    //         se.push(dirs[i]);
+    //         i++;
+    //     }
+    //     console.log(title, se);
+    //     i++;
+    // }
+
+}
+
+class Item {
+    constructor(ID, title) {
+        this.ID = ID;
+        this.title = title;
+        this.seasons = [];
+        this.movies = [];
+    }
 }
 
 const PORT = process.env.PORT || 3100;

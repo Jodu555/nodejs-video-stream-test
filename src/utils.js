@@ -7,7 +7,6 @@ const listFiles = (lcPath) => {
     const dirs = [];
     fs.readdirSync(lcPath).map(e => { return { name: e, path: path.join(lcPath, e) } }).forEach(entity => {
         if (fs.statSync(entity.path).isDirectory()) {
-            console.log('trav', dirs, entity);
             dirs.push(entity.name);
             const revOutput = listFiles(path.join(entity.path))
             files.push(...revOutput.files);
