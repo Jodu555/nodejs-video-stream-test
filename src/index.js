@@ -62,24 +62,20 @@ const crawlAndIndex = () => {
         }
     });
 
-    console.log(obj);
+    const aniworld = obj['Aniworld']
 
-    // console.log(dirs);
+    // console.log(aniworld);
     // return;
-    // for (let i = 0; i < dirs.length;) {
-    //     const title = dirs[i];
-    //     const se = [];
-    //     // console.log(title, i);
-    //     i++;
-    //     // console.log(1337, title, i, dirs[i]);
-    //     while (dirs[i] != undefined && dirs[i].includes('Season-')) {
-    //         console.log(1212, title, i, dirs[i]);
-    //         se.push(dirs[i]);
-    //         i++;
-    //     }
-    //     console.log(title, se);
-    //     i++;
-    // }
+    for (let i = 0; i < aniworld.length;) {
+        const title = aniworld[i];
+        const se = [];
+        i++;
+        while (aniworld[i] != undefined && (aniworld[i].includes('Season-') || aniworld[i].includes('Movies'))) {
+            se.push(aniworld[i]);
+            i++;
+        }
+        console.log(title, se, aniworld[i], i);
+    }
 
 }
 
