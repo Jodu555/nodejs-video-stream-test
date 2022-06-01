@@ -64,27 +64,31 @@ const crawlAndIndex = () => {
 
     const aniworld = obj['Aniworld']
 
+    const items = [];
+
     // console.log(aniworld);
     // return;
     for (let i = 0; i < aniworld.length;) {
         const title = aniworld[i];
-        const se = [];
+        const seasons = [];
+        const movies = []
         i++;
         while (aniworld[i] != undefined && (aniworld[i].includes('Season-') || aniworld[i].includes('Movies'))) {
-            se.push(aniworld[i]);
+            aniworld[i].includes('Season-') ? seasons.push(aniworld[i]) : movies.push(aniworld[i]);
             i++;
         }
-        console.log(title, se, aniworld[i], i);
+        items.push(new Item(null, title, movies, seasons));
     }
+    console.log(items);
 
 }
 
 class Item {
-    constructor(ID, title) {
+    constructor(ID, title, movies = [], seasons = []) {
         this.ID = ID;
         this.title = title;
-        this.seasons = [];
-        this.movies = [];
+        this.seasons = seasons;
+        this.movies = movies;
     }
 }
 
