@@ -44,6 +44,7 @@ if (process.env.https) {
 app.use(express.static(path.join('static')));
 
 app.get("/video", (req, res) => {
+    console.log(req.params);
     // Ensure there is a range given for the video
     const range = req.headers.range;
     if (!range) {
@@ -51,14 +52,14 @@ app.get("/video", (req, res) => {
         return;
     }
 
-    const videoPath = path.join('F:\\Dayli Record', '2020-08-19 03-14-59.mp4');
+    const videoPath = path.join(path.join(process.env.VIDEO_PATH, 'STO', 'Mia and Me – Abenteuer in Centopia', 'Season-1', 'Mia and Me – Abenteuer in Centopia St#1 Flg#1.mp4'));
     const videoSize = fs.statSync(videoPath).size;
 
     const CHUNK_SIZE = 10 ** 6; // 1MB
     const start = Number(range.replace(/\D/g, ""));
     const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 
-    console.log({ videoPath, videoSize, start, end });
+    // console.log({ videoPath, videoSize, start, end });
 
     const contentLength = end - start + 1;
     const headers = {
