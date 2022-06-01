@@ -8,6 +8,7 @@ const https = require('https');
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const { listFiles } = require('./utils.js');
 const dotenv = require('dotenv').config();
 
 // const { Database } = require('@jodu555/mysqlapi');
@@ -43,38 +44,16 @@ if (process.env.https) {
 // Your Middleware handlers here
 app.use(express.static(path.join('static')));
 
-app.get("/video", (req, res) => {
-    console.log(req.params);
-    // Ensure there is a range given for the video
-    const range = req.headers.range;
-    if (!range) {
-        res.status(400).send("Requires Range header");
-        return;
-    }
+app.get("/video", require('./video.js'));
 
-    const videoPath = path.join(path.join(process.env.VIDEO_PATH, 'STO', 'Mia and Me – Abenteuer in Centopia', 'Season-1', 'Mia and Me – Abenteuer in Centopia St#1 Flg#1.mp4'));
-    const videoSize = fs.statSync(videoPath).size;
+const crawlAndIndex = () => {
+    const { dirs, files } = listFiles(process.env.VIDEO_PATH);
 
-    const CHUNK_SIZE = 10 ** 6; // 1MB
-    const start = Number(range.replace(/\D/g, ""));
-    const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-
-    // console.log({ videoPath, videoSize, start, end });
-
-    const contentLength = end - start + 1;
-    const headers = {
-        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-        "Accept-Ranges": "bytes",
-        "Content-Length": contentLength,
-        "Content-Type": "video/mp4",
-    };
-
-    res.writeHead(206, headers);
-    const videoStream = fs.createReadStream(videoPath, { start, end });
-    videoStream.pipe(res);
-});
+}
 
 const PORT = process.env.PORT || 3100;
 server.listen(PORT, () => {
     console.log(`Express App Listening ${process.env.https ? 'with SSL ' : ''}on ${PORT}`);
+
+    crawlAndIndex();
 });
